@@ -49,9 +49,7 @@ class BoardsController < ApplicationController
 
 			#evaluate board to check again for any winners or end of game
 			player_moves, computer_moves, available_spots = evaluate_board(@board)
-			if @winner.nil?
-				@winner, @winning_spots = find_winner(Board.winning_combos, player_moves, computer_moves, available_spots)
-			end
+			@winner, @winning_spots = find_winner(Board.winning_combos, player_moves, computer_moves, available_spots)
 		end
 
 		@space = params[:space]
