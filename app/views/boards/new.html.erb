@@ -1,0 +1,36 @@
+
+<h1 class="center"> Tic tac toe </h1>
+
+<table class="center" border="4" frame="hsides" align="center">
+	<tr>
+	    <td id="space0"> <%= link_to '', make_move_path(id: @board.id, space: '0'), method: :put, class:'unplayed', remote: true %></td>
+	    <td id="space1"><%= link_to '', make_move_path(id: @board.id, space: '1'), method: :put, class:'unplayed', remote: true %></td>
+	    <td id="space2"><%= link_to '', make_move_path(id: @board.id, space: '2'), method: :put, class:'unplayed', remote: true %></td>
+	</tr>
+
+	<tr>
+	    <td id="space3"><%= link_to '', make_move_path(id: @board.id, space: '3'), method: :put, class:'unplayed', remote: true %></td>
+	    <td id="space4"><%= link_to '', make_move_path(id: @board.id, space: '4'), method: :put, class:'unplayed', remote: true %></td>
+	    <td id="space5"><%= link_to '', make_move_path(id: @board.id, space: '5'), method: :put, class:'unplayed', remote: true %></td>
+	</tr>
+	
+	<tr>
+	    <td id="space6"><%= link_to '', make_move_path(id: @board.id, space: '6'), method: :put, class:'unplayed', remote: true %></td>
+	    <td id="space7"><%= link_to '', make_move_path(id: @board.id, space: '7'), method: :put, class:'unplayed', remote: true %></td>
+	    <td id="space8"><%= link_to '', make_move_path(id: @board.id, space: '8'), method: :put, class:'unplayed', remote: true %></td>
+	</tr>
+</table>
+
+<div id="winner" class="center">
+
+</div>
+
+<div class="center">
+	<a href="/" class="btn btn-primary">
+		Reset game
+	</a>
+</div>
+
+<hr>
+
+<p class="center"> Created by Mark Amirtharaj. </p>

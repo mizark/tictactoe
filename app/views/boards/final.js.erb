@@ -1,0 +1,4 @@
+$('#space<%= @space %>').html('X').attr('class','played')
+$('#space<%= @comp_move %>').html('O').attr('class', 'played')
+$('.unplayed').attr('class', 'unplayed_spots')
+$('#winner').html('<%= @winner %>')
