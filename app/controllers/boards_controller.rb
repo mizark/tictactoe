@@ -47,9 +47,8 @@ class BoardsController < ApplicationController
 
 		#evaluate board again to check for any winners or end of game
 		player_moves, computer_moves, available_spots = evaluate_board(@board)
-		@winner = find_winner(Board.winning_combos, player_moves, computer_moves, available_spots)
+		@winner, @winning_spots = find_winner(Board.winning_combos, player_moves, computer_moves, available_spots)
 		@space = params[:space]
-		@unplayed_spaces = available_spots
 		
 		#output moves or final result of game through ajax
 		respond_to do |format|
@@ -84,13 +83,13 @@ class BoardsController < ApplicationController
 		#see if either the player or computer has hit a winning combo
 		def find_winner(winning_combos, player_moves, computer_moves, available_spots)
 			winning_combos.each do |combo|
-				return 'You win!' if combo & player_moves == combo
-				return 'Sorry friend, you lost!' if combo & computer_moves == combo
+				return 'You win!', combo if combo & player_moves == combo
+				return 'Sorry friend, you lost!', combo if combo & computer_moves == combo
 			end
 
 			#checks if there are any spots on the board. if not, and winner is nil, game is a draw.
 			if available_spots.size == 0
-				return 'Tis a draw!'
+				return 'Tis a draw!', []
 			end
 
 			return nil
