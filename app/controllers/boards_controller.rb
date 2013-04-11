@@ -85,7 +85,7 @@ class BoardsController < ApplicationController
 		def find_winner(winning_combos, player_moves, computer_moves, available_spots)
 			winning_combos.each do |combo|
 				return 'You win!' if combo & player_moves == combo
-				return 'Sorry homie, you lost!' if combo & computer_moves == combo
+				return 'Sorry friend, you lost!' if combo & computer_moves == combo
 			end
 
 			#checks if there are any spots on the board. if not, and winner is nil, game is a draw.
