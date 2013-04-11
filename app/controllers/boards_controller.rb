@@ -12,44 +12,50 @@ class BoardsController < ApplicationController
 		@board.spots[params[:space].to_i] = 'X'
 		@board.save
 		
-		#evaluate board to get breakdown of spots
-		player_moves, computer_moves, available_spots = evaluate_board(@board)
-
-		#computer goes through hierarchy of priorities to make best move
-
-		# 1. check if computer can make move to win game
-		if test(Board.winning_combos, computer_moves, available_spots)
-
-		# 2. check if computer needs to make move to block player from winning
-		elsif test(Board.winning_combos, player_moves, available_spots)
-
-		# 3. check if computer can make move to force player to defend instead of creating fork
-		elsif diverge_fork(Board.winning_combos, computer_moves, available_spots)
-		
-		# 4. check if computer can make move to create a fork 
-		elsif test(Board.fork_combos, computer_moves, available_spots)
-
-		# 5. check if computer can block player from creating a fork
-		elsif test(Board.fork_combos, player_moves, available_spots)
-		
-		# 6. computer picks center spot if open
-		elsif pick_center(available_spots)
-
-		# 7. computer picks opposite corner if player chooses corner spot
-		elsif pick_opposite_corner(available_spots, player_moves, Board.opposite_corners)
-
-		# 8. computer picks corner spot if available
-		elsif pick_spot(available_spots, Board.corner_spots)
-
-		# 9. computer picks side spot if open
-		elsif pick_spot(available_spots, Board.side_spots)
-		end
-
-		#evaluate board again to check for any winners or end of game
+		#evaluate board to get breakdown of spots and see if there's a winner
 		player_moves, computer_moves, available_spots = evaluate_board(@board)
 		@winner, @winning_spots = find_winner(Board.winning_combos, player_moves, computer_moves, available_spots)
-		@space = params[:space]
 		
+		#computer goes through hierarchy of priorities to make best move if
+		# there isn't already a winner
+		if @winner.nil?
+			# 1. check if computer can make move to win game
+			if test(Board.winning_combos, computer_moves, available_spots)
+
+			# 2. check if computer needs to make move to block player from winning
+			elsif test(Board.winning_combos, player_moves, available_spots)
+
+			# 3. check if computer can make move to force player to defend instead of creating fork
+			elsif diverge_fork(Board.winning_combos, computer_moves, available_spots)
+			
+			# 4. check if computer can make move to create a fork 
+			elsif test(Board.fork_combos, computer_moves, available_spots)
+
+			# 5. check if computer can block player from creating a fork
+			elsif test(Board.fork_combos, player_moves, available_spots)
+			
+			# 6. computer picks center spot if open
+			elsif pick_center(available_spots)
+
+			# 7. computer picks opposite corner if player chooses corner spot
+			elsif pick_opposite_corner(available_spots, player_moves, Board.opposite_corners)
+
+			# 8. computer picks corner spot if available
+			elsif pick_spot(available_spots, Board.corner_spots)
+
+			# 9. computer picks side spot if open
+			elsif pick_spot(available_spots, Board.side_spots)
+			end
+
+			#evaluate board to check again for any winners or end of game
+			player_moves, computer_moves, available_spots = evaluate_board(@board)
+			if @winner.nil?
+				@winner, @winning_spots = find_winner(Board.winning_combos, player_moves, computer_moves, available_spots)
+			end
+		end
+
+		@space = params[:space]
+
 		#output moves or final result of game through ajax
 		respond_to do |format|
 			if @winner.nil?
